@@ -7,11 +7,13 @@ import LoginPage from './pages/LoginPage'
 import SettingPage from './pages/SettingPage'
 import ProfilePage from './pages/ProfilePage'
 import NotFoundPage from './pages/NotFoundPage'
-import { useAuth } from './auth/useAuth'
+import { useAuth } from './hooks/useAuth'
+import { useThemes } from './hooks/useThemes'
 import {Loader} from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 function App() {
   const {authUser,checkAuth, isCheckingAuth} = useAuth();
+  const {theme} =  useThemes();
   useEffect(()=>{
     checkAuth();
   },[checkAuth]);
@@ -26,7 +28,7 @@ function App() {
   
   return (
     
-    <div>
+    <div data-theme={theme}>
       <Nav/>
       <Routes>
         <Route path="/" element={authUser?<HomePage/>:<Navigate to="/login"></Navigate>}/>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LogOut, Menu, X, User } from "lucide-react";
 import { Link } from "react-router";
 import { CiSettings } from "react-icons/ci";
-import { useAuth } from "../auth/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,7 @@ const Nav = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6 items-center">
-            <Link to="/" className="hover:text-gray-500 text-2xl">
+            <Link to="/setting" className="hover:text-gray-500 text-2xl">
               <CiSettings />
             </Link>
 
@@ -50,7 +50,7 @@ const Nav = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-blue-300 text-black font-bold flex flex-col items-center py-4 space-y-4">
-          <Link to="/" className="hover:text-gray-500 text-2xl">
+          <Link to="/setting" className="hover:text-gray-500 text-2xl">
             <CiSettings />
           </Link>
 

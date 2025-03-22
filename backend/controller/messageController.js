@@ -1,6 +1,7 @@
 const Message = require("../models/messageModel.js");
 const User = require("../models/userModel.js");
-const {cloudinary}  = require("../db/couldinary.js")
+const {cloudinary}  = require("../db/couldinary.js");
+const { getRecieverSocketId, io } = require("../socket/socket.js");
 const getUsers = async(req,res)=>{
     try{
         const loggedInUser = req.user._id;
@@ -12,17 +13,17 @@ const getUsers = async(req,res)=>{
 }
 
 const getMessages = async(req,res)=>{
-    // console.log(req.params); 
+    // console.log(req); 
     try{
-        const myId = req.user._id;
+        const senderId = req.user._id;
         const userToChatId= req.params.id;
         const messages = await Message.find({
             $or: [
-                { sender: myId, receiver: userToChatId },
-                { sender: userToChatId, receiver: myId },
+                { senderId: senderId, receiverId: userToChatId },
+                { senderId: userToChatId, receiverId: senderId },
             ],
         });
-        console.log(messages);
+        // console.log(messages);
         res.status(200).json(messages);
     }catch(err){
         console.log(err);
@@ -71,7 +72,11 @@ const sendMessage = async (req, res) => {
       await newMessage.save();
         
 
-        //todo: realtime function to send message (ssocket.io)
+        //realtime function to send message (socket.io)
+        const receiverSocketID = getRecieverSocketId(receiverId);
+        if(receiverSocketID){
+            io.to(receiverSocketID).emit("newMessage", newMessage)
+        }
 
 
 

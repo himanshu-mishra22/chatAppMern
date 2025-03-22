@@ -12,12 +12,12 @@ import { useThemes } from './hooks/useThemes'
 import {Loader} from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 function App() {
-  const {authUser,checkAuth, isCheckingAuth} = useAuth();
+  const {authUser,checkAuth, isCheckingAuth, onlineUsers} = useAuth();
   const {theme} =  useThemes();
   useEffect(()=>{
     checkAuth();
   },[checkAuth]);
-  // console.log({authUser});
+  console.log({onlineUsers});
 
   if(isCheckingAuth && !authUser) return(
     <div className='flex items-center justify-center h-screen'>

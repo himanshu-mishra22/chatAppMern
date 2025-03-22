@@ -10,6 +10,7 @@ const MessageInput = () => {
     const {sendMessage} = useChat();
 
     const handleImgChange = (e)=>{
+      e.preventDefault();
         const file = e.target.files[0];
         if(!file.type.startsWith("image/")){
             toast.error("Please select an image file!");

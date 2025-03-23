@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "../hooks/useAuth.js";
 import { Link } from "react-router";
 import { toast } from "react-hot-toast";
+import SignupDesign from '../assets/bgSignup.jpg';
 
 function SignupPage() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -40,7 +41,7 @@ function SignupPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-200">
+    <div className="flex bg-[url('assets/bgSignup.jpg')] bg-cover bg-center items-center justify-center min-h-screen bg-base-200">
       <div className="card w-full max-w-md bg-base-100 shadow-xl p-8">
         <h1 className="text-2xl font-semibold text-center">Sign Up</h1>
 

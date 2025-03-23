@@ -47,7 +47,7 @@ const MessageInput = () => {
         }
     }
   return (
-    <div className="p-4 w-full">
+    <div className="p-2 w-full">
       { img && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
@@ -68,11 +68,11 @@ const MessageInput = () => {
         </div>
       )}
 
-      <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+      <form onSubmit={handleSendMessage} className="flex p-5 justify-center items-center gap-2">
         <div className="flex-1 flex gap-2">
           <input
             type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
+            className="w-full h-16 input input-bordered rounded-lg sm:input-md"
             placeholder="Type a message..."
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -93,14 +93,15 @@ const MessageInput = () => {
           >
             <Image size={20} />
           </button>
-        </div>
-        <button
+          <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="btn btn-md btn-circle"
           disabled={!text.trim() && !img}
         >
           <Send size={22} />
         </button>
+        </div>
+       
       </form>
     </div>
   )

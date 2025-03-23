@@ -8,10 +8,10 @@ import ChatContainer from '../components/ChatContainer';
 function HomePage() {
   const {selectedUser} = useChat();
   return (
-    <div className='h-screen bg-base-200'>
-      <div className="flex items-center justify-center pt-20 px-4">
-        <div className="bg-base-100 rounded-lg shadow-cl wl-full max-w-6xl h-[calc(100vh-8rem)]">
-          <div className="flex h-full rounded-lg overflow-hidden">
+    <div className="h-screen bg-[url('assets/home.jpg')] bg-cover bg-center">
+      <div className="flex items-center justify-center pt-2 px-4">
+        <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-6xl h-screen">
+          <div className="flex text-2xl h-full rounded-lg overflow-hidden">
             <Sidebar/>
             {!selectedUser? <NoChatSelected/> : <ChatContainer/>}
           </div>

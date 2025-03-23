@@ -9,69 +9,63 @@ const Nav = () => {
   const { logout, authUser } = useAuth();
 
   return (
-    <nav className="bg-blue-300 text-black font-bold shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
-          <Link to="/" className="text-2xl font-bold">InAir</Link>
+    <nav className="navbar text-neutral-content bg-neutral font-bold shadow-lg">
+  <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 w-full h-16">
+    
+    {/* Logo aligned to the left */}
+    <Link to="/" className="text-4xl font-bold">InAir</Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6 items-center">
-            <Link to="/setting" className="hover:text-gray-500 text-2xl">
-              <CiSettings />
-            </Link>
+    {/* Desktop Menu aligned to the right */}
+    <div className="hidden md:flex items-center space-x-6 ml-auto">
+      <Link to="/setting" className="text-2xl">
+        <CiSettings className="size-8" />
+      </Link>
 
-            {authUser && (
-              <>
-                <Link to="/profile" className="hover:text-gray-500 flex items-center">
-                  <User className="size-5" />
-                </Link>
-
-                <button
-                  className="hover:text-gray-500 flex gap-2 items-center"
-                  onClick={logout}
-                >
-                  <LogOut className="size-5" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-blue-300 text-black font-bold flex flex-col items-center py-4 space-y-4">
-          <Link to="/setting" className="hover:text-gray-500 text-2xl">
-            <CiSettings />
+      {authUser && (
+        <>
+          <Link to="/profile" className="flex items-center">
+            <User className="size-8" />
           </Link>
 
-          {authUser && (
-            <>
-              <Link to="/profile" className="hover:text-gray-500 flex items-center">
-                <User className="size-5" />
-              </Link>
-
-              <button
-                className="hover:text-gray-500 flex gap-2 items-center"
-                onClick={logout}
-              >
-                <LogOut className="size-5" />
-                <span>Logout</span>
-              </button>
-            </>
-          )}
-        </div>
+          <button className="flex gap-2 items-center" onClick={logout}>
+            <LogOut className="size-8" />
+            <span className="hidden sm:inline">Logout</span>
+          </button>
+        </>
       )}
-    </nav>
+    </div>
+
+    {/* Mobile Menu Button */}
+    <div className="md:hidden">
+      <button onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+    </div>
+  </div>
+
+  {/* Mobile Menu */}
+  {isOpen && (
+    <div className="md:hidden font-bold flex flex-col items-center py-4 space-y-4">
+      <Link to="/setting" className="text-2xl">
+        <CiSettings />
+      </Link>
+
+      {authUser && (
+        <>
+          <Link to="/profile" className="flex items-center">
+            <User className="size-6" />
+          </Link>
+
+          <button className="flex gap-2 items-center" onClick={logout}>
+            <LogOut className="size-6" />
+            <span>Logout</span>
+          </button>
+        </>
+      )}
+    </div>
+  )}
+</nav>
+
   );
 };
 

@@ -6,7 +6,8 @@ const cors = require('cors');
 const connectDB = require('./db/db');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const {app,server, io} = require("./socket/socket")
+const {app,server, io} = require("./socket/socket");
+const path = require("path");
 
 dotenv.config();
 // const app = express();
@@ -20,7 +21,14 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use("/api/auth",authRoutes);
 app.use("/api/message",messageRoutes);
 
+if(process.env.NODE_ENV==='production'){
+  app.use(express.static(path.join(__dirname,'../frontend/dist')))
 
+
+app.get("*", (req,res)=>{
+  res.sendFile(path.join(__dirname,"../frontend", "dist", "index.html"));
+})
+}
 
 connectDB();
 

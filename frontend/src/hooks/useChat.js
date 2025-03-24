@@ -46,11 +46,15 @@ export const useChat = create((set,get)=>({
         const {selectedUser,messages} = get();
         try {
             const res = await axiosInstance.post(`/message/send/${selectedUser._id}`,data);
-            set({messages:[...messages,res.data]});
+            // console.log(res.data.message)
+            set({messages:[...messages,res.data.message]});
+            // console.log(messages)
         } catch (error) {
             toast.error(error.response.data.message);
         }
+        
     },
+        
 
     subscribeToMessage:()=>{
         const {selectedUser} = get();

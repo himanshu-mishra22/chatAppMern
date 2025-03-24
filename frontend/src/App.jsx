@@ -20,7 +20,7 @@ function App() {
   // console.log({onlineUsers});
 
   if(isCheckingAuth && !authUser) return(
-    <div className='flex items-center justify-center h-screen'>
+    <div className='flex items-center justify-center h-full'>
       <Loader className='size-13 animate-spin'/>
     </div> 
   )

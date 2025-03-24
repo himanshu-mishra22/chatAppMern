@@ -80,7 +80,7 @@ const sendMessage = async (req, res) => {
 
 
 
-        res.status(200).json({message:"Message sent"});
+        res.status(200).json({message:newMessage});
     } catch (error) {
         console.log(error);
         

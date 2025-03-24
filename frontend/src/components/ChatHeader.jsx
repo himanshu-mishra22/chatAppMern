@@ -26,7 +26,9 @@ const ChatHeader = () => {
   // }
 
   return (
-    <div className="flex items-center justify-between bg-base-300 p-4 shadow-md rounded-lg">
+    <div className={`flex items-center justify-between p-4 shadow-md rounded-lg full ${
+            isOnline ? "bg-base-300" : "bg-base-100"
+          }`}>
       {/* User Info */}
       <div className="flex items-center space-x-3">
         {/* Status Indicator */}

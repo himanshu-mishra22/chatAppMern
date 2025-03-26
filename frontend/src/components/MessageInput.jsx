@@ -32,26 +32,31 @@ const MessageInput = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
   const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!text.trim() && !img) return;
-    try {
-      if (file) {
-        console.log(file);
-        const formData = new FormData();
-        formData.append("image", file);
-        formData.append("text",text.trim())
-        await sendMessage(formData);
-      }
+  e.preventDefault();
+  if (!text.trim() && !img) return;
 
-      //clearing
-      setText("");
-      setImg(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    } catch (error) {
-      toast.error("Failed to send message!");
-      console.log(error);
+  try {
+    const formData = new FormData();
+    if (file) {
+      formData.append("image", file);
     }
-  };
+    formData.append("text", text.trim());
+
+    console.log("Sending message:", { text, file });
+
+    const response = await sendMessage(formData);
+    console.log("Response from sendMessage:", response);
+
+    // Clear fields
+    setText("");
+    setImg(null);
+    setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  } catch (error) {
+    toast.error("Failed to send message!");
+    console.error("Error sending message:", error);
+  }
+};
   return (
     <div className="p-2 w-full">
       {img && (

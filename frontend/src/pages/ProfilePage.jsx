@@ -1,8 +1,8 @@
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Camera, Clock, Mail, Upload, User } from 'lucide-react';
-import defaultImage from '../assets/default.jpg';
-
+// import defaultImage from '../../../backend/uploads/default.jpg';
+import {BACK_END_BASE_URL} from "../utils/axios"
 function ProfilePage() {
   const { authUser, isUpdatingProfile, updateProfile } = useAuth();
   const [profilePic, setProfilePic] = React.useState(null);
@@ -11,13 +11,9 @@ function ProfilePage() {
     e.preventDefault();
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
-      const base64 = reader.result;
-      setProfilePic(base64);
-      await updateProfile({ profilePic: base64 });
-    };
+    const formData = new FormData();
+    formData.append('profilePic', file);
+    updateProfile(formData);
   };
 
   return (
@@ -28,7 +24,7 @@ function ProfilePage() {
         {/* Profile Picture Upload */}
         <div className="relative w-32 h-32 mx-auto mb-4">
           <img
-            src={profilePic || authUser.profilePic || defaultImage}
+            src={`${BACK_END_BASE_URL}/${profilePic || authUser.profilePic || "uploads/default.jpg"}` } 
             alt="Profile"
             className="w-full h-full rounded-full object-cover border-4 border-primary shadow-lg"
           />
@@ -44,6 +40,7 @@ function ProfilePage() {
               accept="image/*"
               className="hidden"
               id="avatar-upload"
+              name="profilePic"
               onChange={handleProfileUpdate}
               disabled={isUpdatingProfile}
             />

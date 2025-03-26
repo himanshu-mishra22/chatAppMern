@@ -45,6 +45,7 @@ export const useChat = create((set,get)=>({
     sendMessage: async(data)=>{
         const {selectedUser,messages} = get();
         try {
+            console.log(data);
             const res = await axiosInstance.post(`/message/send/${selectedUser._id}`,data);
             // console.log(res.data.message)
             set({messages:[...messages,res.data.message]});
@@ -63,6 +64,7 @@ export const useChat = create((set,get)=>({
 
         const socket = useAuth.getState().socket;
         socket.on("newMessage", (newMessage)=>{
+            if(newMessage.senderId !== selectedUser._id) return;
             set({
                 messages:[...get().messages, newMessage],
             });

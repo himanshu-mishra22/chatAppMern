@@ -73,6 +73,7 @@ export const useAuth = create((set,get) => ({
     set({ isUpdatingProfile: true });
     try {
       console.log(data);
+     
       const res = await axiosInstance.put("/auth/update-profile", data);
       console.log(res.data);
       set({ authUser: res.data });

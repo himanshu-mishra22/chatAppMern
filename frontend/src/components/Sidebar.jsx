@@ -4,6 +4,7 @@ import SideBarLoading from "./SideBarLoading";
 import { Users } from "lucide-react";
 import defaultImage from '../assets/default.jpg';
 import { useAuth } from "../hooks/useAuth";
+import { BACK_END_BASE_URL } from "../utils/axios";
 
 const Sidebar = () => {
   const { getUsers, setSelectedUser, users, selectedUser, isUsersLoading } =
@@ -56,7 +57,8 @@ const Sidebar = () => {
            >
             <div className="realtive mx-auto lg:mx-0">
               <img
-              src={user.profilePic || defaultImage}
+              src={`${BACK_END_BASE_URL}/${user.profilePic!=""?(user.profilePic):("uploads/default.jpg")}` }
+              // src={user.profilePic || defaultImage}
               alt={user.name}
               className="size-12 object-cover rounded-full"
               />

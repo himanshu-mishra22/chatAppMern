@@ -2,6 +2,7 @@ const Message = require("../models/messageModel.js");
 const User = require("../models/userModel.js");
 const {cloudinary}  = require("../db/couldinary.js");
 const { getRecieverSocketId, io } = require("../socket/socket.js");
+const { renameSync} = require("fs");
 const getUsers = async(req,res)=>{
     try{
         const loggedInUser = req.user._id;
@@ -51,16 +52,17 @@ const getMessages = async(req,res)=>{
 //         await newMessgae.save();
 const sendMessage = async (req, res) => {
     try {
-      const { text, image } = req.body;
+        let imageUrl;
+        if(req.file){
+            let filedir=`uploads/images`;
+            imageUrl=`${filedir}/${req.file.originalname}`
+             renameSync(req.file.path,imageUrl);
+           
+        }
+      const { text} = req.body;
       const { id: receiverId } = req.params;
       const senderId = req.user._id;
   
-      let imageUrl;
-      if (image) {
-        // Upload base64 image to cloudinary
-        const uploadResponse = await cloudinary.uploader.upload(image);
-        imageUrl = uploadResponse.secure_url;
-      }
   
       const newMessage = new Message({
         senderId,

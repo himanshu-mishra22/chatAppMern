@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../db/utils");
 const { cloudinary } = require("../db/couldinary");
+const {mkdirSync, renameSync} = require('fs');
 const signup=  async (req, res) => {
     const {email, fullName,  password} = req.body;
     try {
@@ -89,21 +90,21 @@ const logout= (req, res) => {
 
 const updateProfile= async (req, res) => {
     try {
-        const {profilePic} = req.body;
+        if(!req.file){
+            return res.status(400).json({message:"Please upload a profile picture"});
+        }
        const userId =  req.user._id;
-
-       if(!profilePic){
-           return res.status(400).json({message:"Profile picture is required"});
-       }
-    //    console.log(req.body); 
-       const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-       const updatedUser = await User.findByIdAndUpdate(userId,{profilePic:uploadedResponse.secure_url},{new:true});
-       res.status(200).json({
-        _id: updatedUser._id,
-        fullName: updatedUser.fullName,
-        email: updatedUser.email,
-        profilePic: updatedUser.profilePic
-      });
+       let filedir=`uploads`
+       let filename=`${filedir}/${req.file.originalname}`
+       renameSync(req.file.path,filename)
+        const updatedUser = await User.findByIdAndUpdate(userId,{profilePic:filename},{new:true});
+        res.status(200).json({
+                _id: updatedUser._id,
+                fullName: updatedUser.fullName,
+                email: updatedUser.email,
+                profilePic: updatedUser.profilePic
+              });
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({message:"Internal server error"});

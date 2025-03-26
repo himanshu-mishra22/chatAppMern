@@ -1,54 +1,60 @@
-import React, { useRef, useState } from 'react'
-import { useChat } from '../hooks/useChat';
-import { Send, X, Image } from 'lucide-react';
-import toast from 'react-hot-toast';
+import React, { useRef, useState } from "react";
+import { useChat } from "../hooks/useChat";
+import { Send, X, Image } from "lucide-react";
+import toast from "react-hot-toast";
 
 const MessageInput = () => {
-    const [text,setText] = useState("");
-    const [img, setImg] = useState(null);
-    const fileInputRef=useRef();
-    const {sendMessage} = useChat();
+  const [text, setText] = useState("");
+  const [img, setImg] = useState(null);
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef();
+  const { sendMessage } = useChat();
 
-    const handleImgChange = (e)=>{
-      e.preventDefault();
-        const file = e.target.files[0];
-        if(!file.type.startsWith("image/")){
-            toast.error("Please select an image file!");
-            return;
-        }
+  const handleImgChange = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    console.log(file);
+    setFile(file);
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file!");
+      return;
+    }
 
-        const reader = new FileReader();
-        // reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            setImg(reader.result);
-          };
-          reader.readAsDataURL(file);
+    const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImg(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+  const removeImg = () => {
+    setImg(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!text.trim() && !img) return;
+    try {
+      if (file) {
+        console.log(file);
+        const formData = new FormData();
+        formData.append("image", file);
+        formData.append("text",text.trim())
+        await sendMessage(formData);
+      }
 
+      //clearing
+      setText("");
+      setImg(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      toast.error("Failed to send message!");
+      console.log(error);
     }
-    const removeImg= ()=>{
-        setImg(null);
-        if(fileInputRef.current) fileInputRef.current.value = "";
-    }
-    const handleSendMessage =async (e)=>{
-        e.preventDefault();
-        if(!text.trim() && !img) return;
-        try {
-            await sendMessage({
-                text:text.trim(),
-                image:img,
-            })
-            //clearing
-            setText("");
-            setImg(null);
-            if(fileInputRef.current) fileInputRef.current.value = "";
-        } catch (error) {
-            toast.error("Failed to send message!");
-            console.log(error);
-        }
-    }
+  };
   return (
     <div className="p-2 w-full">
-      { img && (
+      {img && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
             <img
@@ -68,7 +74,10 @@ const MessageInput = () => {
         </div>
       )}
 
-      <form onSubmit={handleSendMessage} className="flex p-5 justify-center items-center gap-2">
+      <form
+        onSubmit={handleSendMessage}
+        className="flex p-5 justify-center items-center gap-2"
+      >
         <div className="flex-1 flex gap-2">
           <input
             type="text"
@@ -80,6 +89,7 @@ const MessageInput = () => {
           <input
             type="file"
             accept="image/*"
+            name="image"
             className="hidden"
             ref={fileInputRef}
             onChange={handleImgChange}
@@ -87,24 +97,24 @@ const MessageInput = () => {
 
           <button
             type="button"
+            name="image"
             className={`hidden sm:flex btn btn-circle
-                     ${ img ? "text-emerald-500" : "text-zinc-400"}`}
+                     ${img ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
           </button>
           <button
-          type="submit"
-          className="btn btn-md btn-circle"
-          disabled={!text.trim() && !img}
-        >
-          <Send size={22} />
-        </button>
+            type="submit"
+            className="btn btn-md btn-circle"
+            disabled={!text.trim() && !img}
+          >
+            <Send size={22} />
+          </button>
         </div>
-       
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default MessageInput
+export default MessageInput;

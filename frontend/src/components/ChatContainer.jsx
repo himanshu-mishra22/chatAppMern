@@ -1,12 +1,13 @@
-import React, { useRef } from 'react'
-import { useChat } from '../hooks/useChat'
-import { useEffect } from 'react';
-import ChatHeader from './ChatHeader';
-import MessageInput from './MessageInput';
-import MessageLoading from './MessageLoading';
-import {useAuth} from '../hooks/useAuth';
-import defaultImage from '../assets/default.jpg';
-import {formatMessageTime} from '../utils/formatDateTime'
+import React, { useRef } from "react";
+import { useChat } from "../hooks/useChat";
+import { useEffect } from "react";
+import ChatHeader from "./ChatHeader";
+import MessageInput from "./MessageInput";
+import MessageLoading from "./MessageLoading";
+import { useAuth } from "../hooks/useAuth";
+// import defaultImage from '../../../backend/uploads/default.jpg';
+import { formatMessageTime } from "../utils/formatDateTime";
+import { BACK_END_BASE_URL } from "../utils/axios";
 
 const ChatContainer = () => {
   const {
@@ -21,19 +22,23 @@ const ChatContainer = () => {
   const messageEndRef = useRef(null);
 
   useEffect(() => {
-    console.log(messages);
+    // console.log(messages);
     getMessages(selectedUser._id);
     subscribeToMessage();
     return () => unsubscribeFromMessage();
-  }, [selectedUser._id, getMessages,subscribeToMessage,unsubscribeFromMessage]);
+  }, [
+    selectedUser._id,
+    getMessages,
+    subscribeToMessage,
+    unsubscribeFromMessage,
+  ]);
 
   useEffect(() => {
     // console.log(messages);
-    
     if (messageEndRef.current && messages) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  },[messages]);
+  }, [messages]);
 
   if (isMessagesLoading) {
     return (
@@ -44,14 +49,7 @@ const ChatContainer = () => {
       </div>
     );
   }
-
-  // function formatMessageTime(date) {
-  //   new Date(date).toLocaleTimeString("en-US", {
-  //     hour: "2-digit",
-  //     minute: "2-digit",
-  //     hour12: false,
-  //   });
-  // }
+  console.log(authUser.profilePic);
 
   return (
     <div className="flex-1 flex flex-col overflow-auto">
@@ -61,7 +59,9 @@ const ChatContainer = () => {
         {messages.map((message) => (
           <div
             key={message._id}
-            className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+            className={`chat ${
+              message.senderId === authUser._id ? "chat-end" : "chat-start"
+            }`}
             ref={messageEndRef}
           >
             <div className=" chat-image avatar">
@@ -69,8 +69,12 @@ const ChatContainer = () => {
                 <img
                   src={
                     message.senderId === authUser._id
-                      ? authUser.profilePic || defaultImage
-                      : selectedUser.profilePic || defaultImage
+                      ? authUser.profilePic != ""
+                        ? `${BACK_END_BASE_URL}/${authUser.profilePic}`
+                        : `${BACK_END_BASE_URL}/uploads/default.jpg`
+                      : selectedUser.profilePic
+                      ? `${BACK_END_BASE_URL}/${selectedUser.profilePic}`
+                      : `${BACK_END_BASE_URL}/uploads/default.jpg`
                   }
                   alt="profile pic"
                 />
@@ -84,7 +88,7 @@ const ChatContainer = () => {
             <div className="chat-bubble flex flex-col">
               {message.image && (
                 <img
-                  src={message.image}
+                  src={`${BACK_END_BASE_URL}/${message.image}`}
                   alt="Attachment"
                   className="sm:max-w-[200px] rounded-md mb-2"
                 />
@@ -100,4 +104,4 @@ const ChatContainer = () => {
   );
 };
 
-export default ChatContainer
+export default ChatContainer;

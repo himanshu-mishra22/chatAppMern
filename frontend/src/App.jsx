@@ -12,12 +12,11 @@ import { useThemes } from './hooks/useThemes'
 import {Loader} from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 function App() {
-  const {authUser,checkAuth, isCheckingAuth, onlineUsers} = useAuth();
+  const {authUser,checkAuth, isCheckingAuth} = useAuth();
   const {theme} =  useThemes();
   useEffect(()=>{
     checkAuth();
   },[checkAuth]);
-  // console.log({onlineUsers});
 
   if(isCheckingAuth && !authUser) return(
     <div className='flex items-center justify-center h-full'>
@@ -36,7 +35,6 @@ function App() {
         <Route path="/login" element={!authUser?<LoginPage/>:<Navigate to="/"></Navigate>}/>
         <Route path="/setting" element={<SettingPage/>}/>
         <Route path="/profile" element={authUser?<ProfilePage/>:<Navigate to="/login"></Navigate>}/>
-        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
 
       <Toaster/>

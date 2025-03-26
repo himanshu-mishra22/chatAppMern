@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use("/uploads", express.static("uploads"));
 app.use("/api/auth",authRoutes);
 app.use("/api/message",messageRoutes);
 

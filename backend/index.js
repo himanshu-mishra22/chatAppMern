@@ -13,7 +13,7 @@ dotenv.config();
 // const app = express();
 
 
-app.use(cors({origin: ["http://localhost:5173"], credentials: true}));
+app.use(cors({origin: ["http://localhost:5173","https://chat-app-mern-nu-three.vercel.app"], credentials: true}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json({limit: '50mb'}));

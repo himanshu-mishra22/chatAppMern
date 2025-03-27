@@ -6,4 +6,4 @@ export const axiosInstance = axios.create({
 });
 
     
-export const BACK_END_BASE_URL= import.meta.env.MODE==='development' ? "https://chatappmern-kjal.onrender.com" : "https://chatappmern-kjal.onrender.com";
+export const BACK_END_BASE_URL= "https://chatappmern-kjal.onrender.com";
